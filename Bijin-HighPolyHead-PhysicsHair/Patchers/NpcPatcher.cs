@@ -135,87 +135,66 @@ namespace BijinAIOPathcer.Patchers
                         
                         nifFile.Save(path, Constants.SaveOptions);
                     }
+                    if (!linkCacheConnectedToLoadOrder.TryResolve<INpcGetter>(record.FormKey, out var winningRecord) || winningRecord is null)
+                    {
+                        continue;
+                    }
+                    Console.WriteLine(record.FormKey);
+                    if (skipMods.Contains(winningRecord.FormKey.ModKey.FileName)) {
+                        continue;
+                    }
+                    Npc winningNpc = state.PatchMod.Npcs.GetOrAddAsOverride(winningRecord);
+                    if (!winningNpc.Equals(record))
+                    {
+                        var mask = new Npc.TranslationMask(defaultOn: false)
+                        {
+                            WornArmor = true,
+                            HeadParts = true
+                        };
+                        winningNpc.DeepCopyIn(record, mask);
+                    }
+                    if (record.EditorID == "HirelingJenassa")
+                    {
+                        winningNpc.HeadParts.Add(new FormLink<IHeadPartGetter>(new FormKey(mod.ModKey, 0x8FF)));
+                    }
+                    else if (record.EditorID == "AdrianneAvenicci")
+                    {
 
-                    if (linkCacheConnectedToLoadOrder.TryResolve<Npc>(record.FormKey, out var winningRecord)){
-                        if (skipMods.Contains(winningRecord.FormKey.ModKey.FileName)) {
-                            continue;
-                        }
-                        Npc winningNpc = state.PatchMod.Npcs.GetOrAddAsOverride(winningRecord);
-                        if (!winningNpc.Equals(record))
+                        ColorRecord hairColor = new(state.PatchMod)
                         {
-                            var mask = new Npc.TranslationMask(defaultOn: false)
-                            {
-                                WornArmor = true,
-                                HeadParts = true
-                            };
-                            winningNpc.DeepCopyIn(record, mask);
+                            EditorID = "AdrianneHairColor"
+                        };
+                        if (Program.settings.Value.Adrianne.HairColor == AdrianneHairColor.VanillaBased)
+                        {
+                            hairColor.Color = ColorTranslator.FromHtml("#2f2a24");
                         }
+                        else
+                        {
+                            hairColor.Color = ColorTranslator.FromHtml("#181212");
+                        }
+                        state.PatchMod.Colors.Add(hairColor);
+                        winningNpc.HairColor = hairColor.ToNullableLink();
 
-                        if (record.EditorID == "HirelingJenassa")
+                    }else if (record.EditorID == "DLC1Valerica")
+                    {
+                        ColorRecord hairColor = new(state.PatchMod)
                         {
-                            winningNpc.HeadParts.Add(new FormLink<IHeadPartGetter>(new FormKey(mod.ModKey, 0x8FF)));
+                            EditorID = "ValericaHairColor"
+                        };
+                        if (Program.settings.Value.Valerica.HairColor == ValericaHairColor.Gery)
+                        {
+                            hairColor.Color = ColorTranslator.FromHtml("#1e1e1e");
                         }
-                        else if (record.EditorID == "AdrianneAvenicci")
+                        else if (Program.settings.Value.Valerica.HairColor == ValericaHairColor.WineRed)
                         {
-
-                            ColorRecord hairColor = new(state.PatchMod);
-                            hairColor.EditorID = "AdrianneHairColor";
-                            if (Program.settings.Value.Adrianne.HairColor == AdrianneHairColor.VanillaBased)
-                            {
-                                hairColor.Color = ColorTranslator.FromHtml("#2f2a24");
-                            }
-                            else
-                            {
-                                hairColor.Color = ColorTranslator.FromHtml("#181212");
-                            }
-                            state.PatchMod.Colors.Add(hairColor);
-                            winningNpc.HairColor = hairColor.ToNullableLink();
-
-                        }else if (record.EditorID == "DLC1Valerica")
-                        {
-                            ColorRecord hairColor = new(state.PatchMod)
-                            {
-                                EditorID = "ValericaHairColor"
-                            };
-                            if (Program.settings.Value.Valerica.HairColor == ValericaHairColor.Gery)
-                            {
-                                hairColor.Color = ColorTranslator.FromHtml("#1e1e1e");
-                            }
-                            else if (Program.settings.Value.Valerica.HairColor == ValericaHairColor.WineRed)
-                            {
-                            
-                                hairColor.Color = ColorTranslator.FromHtml("#180b0e");
-                                
-                            }
-                            else
-                            {
-                                hairColor.Color = ColorTranslator.FromHtml("#101010");
-                            }
-                            state.PatchMod.Colors.Add(hairColor);
-                            winningNpc.HairColor = hairColor.ToNullableLink();
-                        }else if (record.EditorID == "DLC1Valerica")
-                        {
-                            ColorRecord hairColor = new(state.PatchMod)
-                            {
-                                EditorID = "ValericaHairColor"
-                            };
-                            if (Program.settings.Value.Valerica.HairColor == ValericaHairColor.Gery)
-                            {
-                                hairColor.Color = ColorTranslator.FromHtml("#1e1e1e");
-                            }
-                            else if (Program.settings.Value.Valerica.HairColor == ValericaHairColor.WineRed)
-                            {
-                            
-                                hairColor.Color = ColorTranslator.FromHtml("#180b0e");
-                                
-                            }
-                            else
-                            {
-                                hairColor.Color = ColorTranslator.FromHtml("#101010");
-                            }
-                            state.PatchMod.Colors.Add(hairColor);
-                            winningNpc.HairColor = hairColor.ToNullableLink();
+                            hairColor.Color = ColorTranslator.FromHtml("#180b0e");
                         }
+                        else
+                        {
+                            hairColor.Color = ColorTranslator.FromHtml("#101010");
+                        }
+                        state.PatchMod.Colors.Add(hairColor);
+                        winningNpc.HairColor = hairColor.ToNullableLink();
                     }
                     handledNpc.Add(npcName);
                 }
