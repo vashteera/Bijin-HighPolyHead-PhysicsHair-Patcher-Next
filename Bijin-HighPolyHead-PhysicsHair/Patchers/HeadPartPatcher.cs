@@ -13,8 +13,8 @@ namespace BijinAIOPathcer.Patchers
             {
                 foreach (IHeadPartGetter record in mod.HeadParts)
                 { 
-                    Console.WriteLine(record.EditorID);
-                    if (record.EditorID == null)
+                    HashSet<string> skipNames = Program.settings.Value.NamsToSkip.Split(";").Select(s => s.Trim()).ToHashSet();
+                    if (record.EditorID == null || skipNames.Any(name => record.EditorID.Contains(name)))
                     {
                         continue;
                     }
