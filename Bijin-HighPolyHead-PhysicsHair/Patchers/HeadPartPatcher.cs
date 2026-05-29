@@ -13,6 +13,7 @@ namespace BijinAIOPathcer.Patchers
             {
                 foreach (IHeadPartGetter record in mod.HeadParts)
                 { 
+                    Console.WriteLine(record.EditorID);
                     if (record.EditorID == null)
                     {
                         continue;
