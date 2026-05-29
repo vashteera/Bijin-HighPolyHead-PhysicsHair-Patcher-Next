@@ -30,6 +30,10 @@ namespace BijinAIOPathcer.Settings
         [SynthesisTooltip("separate esps with a semicolon (;)")]
         [SynthesisDescription("separate esps with a semicolon (;)")]
         public string ModsToSkip { get; set; } = "";
+
+        [SynthesisTooltip("separate with (;), Valid names: Aela Brelyna Iona Beleval Frea Aranea Borgakh Njada Ria Rayya Uthgerd Delphine Ingjard Illia Lydia Annekke Adelaisa Jenassa Jordis Eola Mjoll Beleval Ugor Grelkai Grelka Muiri Morwen Muiri Senna Sennai Senna Camilla Sylgja Taarie Temba Ysolda Ingun Rikke Hulda Irileth Lisette Sapphire Karliah Tonilia Carlotta Maven Gerdur Idgrod Idgord Adrianne Vex")]
+        [SynthesisDescription("separate with (;), Valid names: Aela Brelyna Iona Beleval Frea Aranea Borgakh Njada Ria Rayya Uthgerd Delphine Ingjard Illia Lydia Annekke Adelaisa Jenassa Jordis Eola Mjoll Beleval Ugor Grelkai Grelka Muiri Morwen Muiri Senna Sennai Senna Camilla Sylgja Taarie Temba Ysolda Ingun Rikke Hulda Irileth Lisette Sapphire Karliah Tonilia Carlotta Maven Gerdur Idgrod Idgord Adrianne Vex")]
+        public string NamsToSkip { get; set; } = "";
     }
 
     public class AdrianneOption
