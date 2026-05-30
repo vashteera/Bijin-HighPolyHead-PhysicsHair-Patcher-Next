@@ -14,9 +14,13 @@ namespace BijinAIOPathcer.Patchers
                 foreach (IHeadPartGetter record in mod.HeadParts)
                 { 
                     HashSet<string> skipNames = Program.settings.Value.NamsToSkip.Split(";").Select(s => s.Trim()).ToHashSet();
-                    if (record.EditorID == null || skipNames.Any(name => record.EditorID.Contains(name)))
+                    if (record.EditorID == null)
                     {
                         continue;
+                    }
+                    if (skipNames.Any(name => record.EditorID.Contains(name)))
+                    {
+                        Console.WriteLine(record.EditorID + " skipped.");
                     }
                     if (record.EditorID.Contains("HeadHP"))
                     {

@@ -17,6 +17,7 @@ namespace BijinAIOPathcer.Patchers
             ImmutableModLinkCache<ISkyrimMod, ISkyrimModGetter> cache = mod.ToImmutableLinkCache();
             HashSet<string> handledNpc = [];
             HashSet<string> skipMods = Program.settings.Value.ModsToSkip.Split(";").Select(s => s.Trim()).ToHashSet();
+            HashSet<string> skipNames = Program.settings.Value.NamsToSkip.Split(";").Select(s => s.Trim()).ToHashSet();
             
             if (Program.settings.Value.UseYourSkin || Program.settings.Value.UseYourSkinNormalMap)
             {
@@ -35,6 +36,15 @@ namespace BijinAIOPathcer.Patchers
             
             foreach (INpcGetter record in mod.Npcs)
             {
+                if(record.EditorID == null)
+                {
+                    Console.WriteLine("Null NPC skipped.");
+                    continue;
+                }
+                if (skipNames.Any(name => record.EditorID.Contains(name)))
+                {
+                    Console.WriteLine(record.EditorID + " skipped.");
+                }
 
                 IFormLinkNullableGetter<IArmorGetter> wornArmor = record.WornArmor;
                 if (!wornArmor.TryResolve(cache, out var context)) {
