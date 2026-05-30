@@ -36,12 +36,13 @@ namespace BijinAIOPathcer.Patchers
             
             foreach (INpcGetter record in mod.Npcs)
             {
-                if(record.EditorID == null)
+                string? name = record.Name?.String;
+                if(name == null)
                 {
                     Console.WriteLine("Null NPC skipped.");
                     continue;
                 }
-                if (skipNames.Any(name => record.EditorID.Contains(name)))
+                if (skipNames.Any(n => n.Contains(name)))
                 {
                     Console.WriteLine(record.EditorID + " skipped.");
                     continue;
