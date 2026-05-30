@@ -21,6 +21,7 @@ namespace BijinAIOPathcer.Patchers
                     if (skipNames.Any(name => record.EditorID.Contains(name)))
                     {
                         Console.WriteLine(record.EditorID + " skipped.");
+                        continue;
                     }
                     if (record.EditorID.Contains("HeadHP"))
                     {
