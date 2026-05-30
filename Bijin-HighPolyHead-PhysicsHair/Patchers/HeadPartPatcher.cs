@@ -18,7 +18,7 @@ namespace BijinAIOPathcer.Patchers
                     {
                         continue;
                     }
-                    if (skipNames.Any(name => record.EditorID.Contains(name)))
+                    if (skipNames.Any(n => record.EditorID.Contains(n)))
                     {
                         Console.WriteLine(record.EditorID + " skipped.");
                         continue;
