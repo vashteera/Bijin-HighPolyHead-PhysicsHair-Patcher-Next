@@ -18,6 +18,12 @@ namespace BijinAIOPathcer.Patchers
             HashSet<string> handledNpc = [];
             HashSet<string> skipMods = Program.settings.Value.ModsToSkip.Split(";").Select(s => s.Trim()).ToHashSet();
             HashSet<string> skipNames = Program.settings.Value.NamsToSkip.Split(";").Select(s => s.Trim()).ToHashSet();
+
+            Console.WriteLine("Skip Names:");
+            foreach (string skipName in skipNames)
+            {
+                Console.Write(skipName + ", ");
+            }
             
             if (Program.settings.Value.UseYourSkin || Program.settings.Value.UseYourSkinNormalMap)
             {
@@ -37,13 +43,8 @@ namespace BijinAIOPathcer.Patchers
             foreach (INpcGetter record in mod.Npcs)
             {
                 string? name = record.Name?.String;
-                if(name == null)
-                {
-                    Console.WriteLine("Null NPC skipped. EditorID: " + record.EditorID);
-                    continue;
-                }
                 Console.WriteLine("NpcPatcher: " + name);
-                if (skipNames.Any(n => n.Contains(name)))
+                if (name != null && skipNames.Any(n => name.Contains(n)))
                 {
                     Console.WriteLine(name + " skipped. EditorID: " + record.EditorID);
                     continue;
