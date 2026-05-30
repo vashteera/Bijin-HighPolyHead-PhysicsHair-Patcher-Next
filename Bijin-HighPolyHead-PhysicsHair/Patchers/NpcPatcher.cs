@@ -39,12 +39,13 @@ namespace BijinAIOPathcer.Patchers
                 string? name = record.Name?.String;
                 if(name == null)
                 {
-                    Console.WriteLine("Null NPC skipped.");
+                    Console.WriteLine("Null NPC skipped. EditorID: " + record.EditorID);
                     continue;
                 }
+                Console.WriteLine("NpcPatcher: " + name);
                 if (skipNames.Any(n => n.Contains(name)))
                 {
-                    Console.WriteLine(record.EditorID + " skipped.");
+                    Console.WriteLine(name + " skipped. EditorID: " + record.EditorID);
                     continue;
                 }
 
